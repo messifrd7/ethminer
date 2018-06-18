@@ -1,8 +1,31 @@
 # Building from source
 
-## General
+## Requirements
 
 This project uses [CMake] and [Hunter] package manager.
+
+### Common
+
+1. [CMake] >= 3.5
+2. [Git](https://git-scm.com/downloads)
+3. [Perl](https://www.perl.org/get.html) needed for OpenSSL
+4. [CUDA Toolkit](https://developer.nvidia.com/cuda-downloads) 9.0 (optional if you want NVidia support)
+
+### Windows
+
+1. [Visual Studio 2017](https://www.visualstudio.com/downloads/); Community Edition works fine. **Make sure you install MSVC 2015 toolkit (v140)**
+
+### Linux
+
+1. GCC version >= TBF
+2. ....
+
+### macOS
+
+1. GCC version >= TBF
+2. ....
+
+## Instructions
 
 1. Make sure git submodules are up to date:
 
@@ -41,43 +64,44 @@ This project uses [CMake] and [Hunter] package manager.
     cmake --build . --config Release
     ```
 
-    Complete sample Windows batch file - **adapt it to your system**. Assumes that:
-
-    * it's placed one folder up from the ethminer source folder
-    * you have CMake installed
-    * you have VS 2017 with the 140 toolset installed; this is needed because CUDA doesn't compile with the 141 toolset currently
-    * you have Perl installed
-
-    ```bat
-    @echo off
-    setlocal
-
-    rem add MSVC in PATH
-    call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\VsMSBuildCmd.bat"
-
-    rem add Perl in PATH; it's needed for OpenSSL build
-    set "PERL_PATH=C:\Perl\perl\bin"
-    set "PATH=%PERL_PATH%;%PATH%"
-
-    rem switch to ethminer's source folder
-    cd "%~dp0\ethminer\"
-
-    if not exist "build\" mkdir "build\"
-
-    cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild -T v140 -DETHASHCL=ON -DETHASHCUDA=ON -DAPICORE=ON ..
-    cmake --build . --config Release --target package
-
-    endlocal
-    pause
-    ```
-
 5. _(Optional, Linux only)_ Install the built executable:
 
     ```shell
     sudo make install
     ```
 
-## OpenCL support on Linux
+### Windows-specific script
+
+Complete sample Windows batch file - **adapt it to your system**. Assumes that:
+
+* it's placed one folder up from the ethminer source folder
+* you have CMake installed
+* you have Perl installed
+
+```bat
+@echo off
+setlocal
+
+rem add MSVC in PATH
+call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\VsMSBuildCmd.bat"
+
+rem add Perl in PATH; it's needed for OpenSSL build
+set "PERL_PATH=C:\Perl\perl\bin"
+set "PATH=%PERL_PATH%;%PATH%"
+
+rem switch to ethminer's source folder
+cd "%~dp0\ethminer\"
+
+if not exist "build\" mkdir "build\"
+
+cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild -T v140 -DETHASHCL=ON -DETHASHCUDA=ON -DAPICORE=ON ..
+cmake --build . --config Release --target package
+
+endlocal
+pause
+```
+
+### OpenCL support on Linux
 
 If you're planning to use [OpenCL on Linux](https://github.com/ruslo/hunter/wiki/pkg.opencl#pitfalls)
 you have to install the OpenGL libraries. E.g. on Ubuntu run:
