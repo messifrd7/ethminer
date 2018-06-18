@@ -17,7 +17,7 @@ This project uses [CMake] and [Hunter] package manager.
 
 ### Linux
 
-1. GCC version >= 4.7
+1. GCC version >= 4.8
 2. ....
 
 ### macOS
